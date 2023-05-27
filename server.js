@@ -2,9 +2,12 @@ const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3500;
 const path = require('path');
+const {logger} = require('./middleware/logger');
+const {errorHandler} = require('./middleware/errorHandler');
 
 // register Middleware
-
+app.use(logger);
+app.use(express.json());
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.use('/', require('./routes/root'));
 
@@ -23,6 +26,7 @@ app.all('*', (req, res) =>{
     }
 });
 
+app.use(errorHandler);
 
 app.listen(PORT, ()=>{
     console.log(`app is running on port ${PORT}`)
