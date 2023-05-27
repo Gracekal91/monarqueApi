@@ -4,13 +4,17 @@ const PORT = process.env.PORT || 3500;
 const path = require('path');
 const {logger} = require('./middleware/logger');
 const {errorHandler} = require('./middleware/errorHandler');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
+const corsOptions = require('./config/corsOptions');
 
 // register Middleware
 app.use(logger);
 app.use(express.json());
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.use('/', require('./routes/root'));
-
+app.use(cookieParser);
+app.use(cors(corsOptions))
 
 
 // Catch non existing routes
