@@ -6,11 +6,6 @@ const serviceSchema = new mongoose.Schema({
         required: true
     },
 
-    imageUrl: {
-        type: String,
-        required: true
-    },
-
     title: {
         type: String,
         required: true

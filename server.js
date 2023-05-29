@@ -11,18 +11,27 @@ const corsOptions = require('./config/corsOptions');
 const connectDB = require('./config/dbConn');
 const mongoose = require('mongoose');
 const{logEvents} = require('./middleware/logger');
+const bodyParser = require('body-parser');
 console.log(process.env.NODE_ENV);
-
-// register Middleware
-app.use(logger);
-app.use(express.json());
-app.use('/', express.static(path.join(__dirname, 'public')));
-app.use('/', require('./routes/root'));
-app.use(cookieParser);
-app.use(cors(corsOptions))
 
 //Connect to the db
 connectDB();
+
+app.use(logger);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+//Middleware - routers
+app.use('/', express.static(path.join(__dirname, 'public')));
+app.use('/', require('./routes/root'));
+app.use('/services', require('./routes/serviceRoutes'));
+
+// register Middleware
+app.use(express.json());
+app.use(cookieParser);
+app.use(cors(corsOptions));
+
+
 
 // Catch non existing routes
 
